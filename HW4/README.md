@@ -14,56 +14,53 @@
     - [x] file.{ID}.cs.nycu (20%)
     - [x] Database & adminer.{ID}.cs.nycu (20%)
 
-:::info
-#### Ref:
-[dnsmasq1](https://www.uptimia.com/questions/how-to-create-wildcard-subdomains-with-dnsmasq)
-[dnsmasq2](https://sp.idv.tw/wp/index.php/2023/02/02/1722/)
-[Nginx SSL CA1](https://blog.gtwang.org/linux/nginx-create-and-install-ssl-certificate-on-ubuntu-linux/)
-[SSL CA2](https://www.humankode.com/ssl/create-a-selfsigned-certificate-for-nginx-in-5-minutes/)
-[nginx conf example](https://github.com/ChuEating1005/SA/blob/master/HW4/Web_Server/nginx.conf)
-[ngx stage](https://moonbingbing.gitbooks.io/openresty-best-practices/content/ngx_lua/phase.html)
-:::
+> [!TIP]
+> #### Ref:
+> [dnsmasq1](https://www.uptimia.com/questions/how-to-create-wildcard-subdomains-with-dnsmasq)
+> [dnsmasq2](https://sp.idv.tw/wp/index.php/2023/02/02/1722/)
+> [Nginx SSL CA1](https://blog.gtwang.org/linux/nginx-create-and-install-ssl-certificate-on-ubuntu-linux/)
+> [SSL CA2](https://www.humankode.com/ssl/create-a-selfsigned-certificate-for-nginx-in-5-minutes/)
+> [nginx conf example](https://github.com/ChuEating1005/SA/blob/master/HW4/Web_Server/nginx.conf)
+> [ngx stage](https://moonbingbing.gitbooks.io/openresty-best-practices/content/ngx_lua/phase.html)
 
 
-:::success
-#### Install OpenResty on Ubuntu 24.04
-[Download Document](https://openresty.org/en/installation.html)
-
-> Step 1
-```bash=
-sudo systemctl disable nginx
-sudo systemctl stop nginx
-sudo apt-get -y install --no-install-recommends wget gnupg ca-certificates lsb-release
-wget -O - https://openresty.org/package/pubkey.gpg | sudo gpg --dearmor -o /usr/share/keyrings/openresty.gpg
-```
-> Step 2
-> For `x86_64` or `amd64` systems:
-```bash=
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/openresty.gpg] http://openresty.org/package/ubuntu $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/openresty.list > /dev/null
-```
-
-> Step 2
-> For `arm64` or `aarch64` systems:
-```bash=
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/openresty.gpg] http://openresty.org/package/arm64/ubuntu $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/openresty.list > /dev/null
-```
-
-> Step 3
-```bash=
-sudo apt-get update
-sudo apt-get -y install openresty
-sudo apt-get -y install --no-install-recommends openresty
-systemctl restart openresty
-systemctl enable openresty
-systemctl status openresty
-```
-
-> Step 4
-```bash=
-vim /usr/local/openresty/nginx/conf/nginx.conf
-# write all the config into the new nginx.conf
-```
-:::
+> [!NOTE] 
+> #### Install OpenResty on Ubuntu 24.04
+> [Download Document](https://openresty.org/en/installation.html)
+> - Step 1
+> ```bash=
+> sudo systemctl disable nginx
+> sudo systemctl stop nginx
+> sudo apt-get -y install --no-install-recommends wget gnupg ca-certificates lsb-release
+> wget -O - https://openresty.org/package/pubkey.gpg | sudo gpg --dearmor -o /usr/share/keyrings/openresty.gpg
+> ```
+> - Step 2
+> - For `x86_64` or `amd64` systems:
+> ```bash=
+> echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/openresty.gpg] http://openresty.org/package/ubuntu $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/openresty.list > /dev/null
+> ```
+> 
+> - Step 2
+> - For `arm64` or `aarch64` systems:
+> ```bash=
+> echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/openresty.gpg] http://openresty.org/package/arm64/ubuntu $(lsb_release -sc) main" | > sudo tee /etc/apt/sources.list.d/openresty.list > /dev/null
+> ```
+> 
+> - Step 3
+> ```bash=
+> sudo apt-get update
+> sudo apt-get -y install openresty
+> sudo apt-get -y install --no-install-recommends openresty
+> systemctl restart openresty
+> systemctl enable openresty
+> systemctl status openresty
+> ```
+> 
+> - Step 4
+> ```bash=
+> vim /usr/local/openresty/nginx/conf/nginx.conf
+> # write all the config into the new nginx.conf
+> ```
 
 ## Virtual Host
 
@@ -93,35 +90,8 @@ sudo openresty -t
 sudo systemctl restart openresty
 ```
 
-:::success
-I use `OpenResty` to finish HW4
-:::
-
-:::spoiler **Nginx Config**
-##### (Not recommend in this HW)
-> example file: `/etc/nginx/sites-available/default`
-```bash=
-sudo vim /etc/nginx/sites-available/nasa
-sudo vim /etc/nginx/sites-available/file
-sudo vim /etc/nginx/sites-available/adminer
-sudo vim /etc/nginx/sites-available/redirect
-```
-
-
-> Link the file to `/etc/nginx/sites-enabled/`
-```bash=
-sudo ln -s /etc/nginx/sites-available/nasa     /etc/nginx/sites-enabled/
-sudo ln -s /etc/nginx/sites-available/file     /etc/nginx/sites-enabled/
-sudo ln -s /etc/nginx/sites-available/adminer  /etc/nginx/sites-enabled/
-sudo ln -s /etc/nginx/sites-available/redirect /etc/nginx/sites-enabled/
-```
-
-> Nginx reload config
-```bash=
-sudo nginx -t
-sudo systemctl restart nginx
-```
-:::
+> [!NOTE] 
+> I use `OpenResty` to finish HW4
 
 > ----
 
@@ -454,7 +424,7 @@ root@sa2024-108:~# source fastapi-env/bin/activate
 (fastapi-env) root@sa2024-108:/your/path# uvicorn main:app --host 192.168.108.1 --port 8080 --reload
 ```
 
-> ==Note==  : Use `deactivate` to leave Python virtual environment
+> **Note**  : Use `deactivate` to leave Python virtual environment
 
 > Distribute traffic (on `192.168.{ID}.1` only)
 ```bash=

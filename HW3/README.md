@@ -1,9 +1,8 @@
 ## HW3
 
-:::info
-I do 3-3 first, then 3-1, 3-2
-It's a good idea to `sudo su -` as root to do the hw
-:::
+> [!NOTE] 
+> I do 3-3 first, then 3-1, 3-2
+> It's a good idea to `sudo su -` as root to do the hw
 
 ### HW 3-1 (24%)
 - [x] sysadm (6%)
@@ -22,12 +21,11 @@ It's a good idea to `sudo su -` as root to do the hw
     - [x] can enter “hidden” (2%) and “public” (2%)
     - [x] operations are read-only(even the file is writable to anonymous) (2%)
 
-:::success
-#### Ref:
-[Ubuntu SFTP reference 1](https://www.cybrosys.com/blog/how-to-setup-sftp-server-on-ubuntu-20-04)
-[Ubuntu SFTP reference 2](https://ui-code.com/archives/310)
-[SFTP reference](https://caibaoz.com/blog/2013/04/27/sftp_config_for_openssh/)
-:::
+> [!NOTE]
+> #### Ref:
+> [Ubuntu SFTP reference 1](https://www.cybrosys.com/blog/how-to-setup-sftp-server-on-ubuntu-20-04)
+> [Ubuntu SFTP reference 2](https://ui-code.com/archives/310)
+> [SFTP reference](https://caibaoz.com/blog/2013/04/27/sftp_config_for_openssh/)
 
 > create user with ssh disable but sftp enable
 ```bash=
@@ -45,14 +43,13 @@ sudo useradd -m -s /usr/sbin/nologin anonymous
 > # -rw-------  1 judge judge  96 Sep 13 17:52 authorized_keys
 > ```
 
-:::warning
-#### Wrong config
-Will cause both SSH and SFTP disable
-```bash=
-sudo vim /etc/ssh/sshd_config
-# DenyUsers sftp-u1 sftp-u2 anonymous
-```
-:::
+> [!WARNING] 
+> #### Wrong config
+> Will cause both SSH and SFTP disable
+> ```bash=
+> sudo vim /etc/ssh/sshd_config
+> # DenyUsers sftp-u1 sftp-u2 anonymous
+> ```
 
 > create user `sysadm`
 ```bash=
@@ -138,15 +135,15 @@ sudo systemctl restart ssh
     - [x] start/status/stop/restart (6%)
         - sftp_watchd should be run in the background, and pid file is not required when using Linux 
 
-:::success
-#### Ref:
-[Ubuntu service](https://chenhh.gitbooks.io/ubuntu-linux/content/service.html)
-[service file setting](https://blog.gtwang.org/linux/linux-create-systemd-service-unit-for-python-echo-server-tutorial-examples/)
-[Ubuntu /etc/init.d](https://felix-lin.com/linux/debianubuntu-%E6%96%B0%E5%A2%9E%E9%96%8B%E6%A9%9F%E8%87%AA%E5%8B%95%E5%9F%B7%E8%A1%8C%E7%A8%8B%E5%BC%8F/)
-[sftp_watchd program by Bee](https://github.com/bee0511/SA/tree/main/HW3)
-[systemd man page](https://www.freedesktop.org/software/systemd/man/latest/systemd.exec.html#StandardOutput=)
-[service output](https://askubuntu.com/questions/1166798/systemd-service-output-to-terminal-pty)
-:::
+> [!NOTE]  
+> #### Ref:
+> [Ubuntu service](https://chenhh.gitbooks.io/ubuntu-linux/content/service.html)
+> [service file setting](https://blog.gtwang.org/linux/linux-create-systemd-service-unit-for-python-echo-server-tutorial-examples/)
+> [Ubuntu /etc/init.d](https://felix-lin.com/linux/debianubuntu-%E6%96%B0%E5%A2%9E%E9%96%8B%E6%A9%9F%E8%87%AA%E5%8B%95%E5%9F%B7%E8%A1%8C%E7%A8%8B%E5%BC%8F/)
+> [sftp_watchd program by Bee](https://github.com/bee0511/SA/tree/main/HW3)
+> [systemd man page](https://www.freedesktop.org/software/systemd/man/latest/systemd.exec.html#StandardOutput=)
+> [service output](https://askubuntu.com/questions/1166798/systemd-service-output-to-terminal-pty)
+
 
 > check rsyslog 
 ```bash=
@@ -270,10 +267,9 @@ lsblk
 # sde      8:64   0    10G  0 disk 
 ```
 
-:::success
-#### Ref:
-[Partition reference](https://askubuntu.com/questions/586439/create-guid-partition-table-gpt-during-ubuntu-server-install)
-:::
+> [!NOTE]  
+> #### Ref:
+> [Partition reference](https://askubuntu.com/questions/586439/create-guid-partition-table-gpt-during-ubuntu-server-install)
 
 
 > Partition for each disk
@@ -328,11 +324,12 @@ sudo parted /dev/sdb
 ls /dev/disk/by-partlabel
 # mypool-1  mypool-2  mypool-3  mypool-4
 ```
-:::success
-#### Ref:
-[zpool reference](https://www.cyberciti.biz/faq/how-to-create-raid-10-striped-mirror-vdev-zpool-on-ubuntu-linux/)
-[zfs ubuntu wiki](https://wiki.ubuntu.com/Kernel/Reference/ZFS)
-:::
+
+> [!NOTE]  
+> #### Ref:
+> [zpool reference](https://www.cyberciti.biz/faq/how-to-create-raid-10-striped-mirror-vdev-zpool-on-ubuntu-linux/)
+> [zfs ubuntu wiki](https://wiki.ubuntu.com/Kernel/Reference/ZFS)
+
 
 > create zfs pool
 ```bash=
@@ -391,18 +388,17 @@ zfs get all mypool/public mypool/hidden | grep -E "compression|atime"
 
 #### zfsbak
 
-:::success
-#### Ref:
+> [!NOTE]  
+> #### Ref:
+> [zfs Ubuntu wiki](https://wiki.ubuntu.com/Kernel/Reference/ZFS)
+> [2023 HW written by KJL](https://github.com/KJLdefeated/NYCU-SA/blob/main/usr/local/etc/zfsbak)
 
-[zfs Ubuntu wiki](https://wiki.ubuntu.com/Kernel/Reference/ZFS)
-[2023 HW written by KJL](https://github.com/KJLdefeated/NYCU-SA/blob/main/usr/local/etc/zfsbak)
-:::
 
-:::info
-**KJL** is NYCU CS student who went to UIUC for one semester.
+> [!TIP]
+> **KJL** is NYCU CS student who went to UIUC for one semester.
+> 
+> [shellcheck](https://www.shellcheck.net/) is your good helper while doing **zfsbak**
 
-==[shellcheck](https://www.shellcheck.net/)== is your good helper while doing **zfsbak**
-:::
 
 > check $PATH
 ```bash=
