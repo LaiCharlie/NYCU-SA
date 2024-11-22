@@ -1,0 +1,17 @@
+# path : /etc/logrotate.d/hw4_log
+
+/home/judge/webserver/log/compressed.log {
+    maxsize 300
+    minsize 150
+    missingok
+    notifempty
+    compress
+    rotate 3
+    create    
+    su root root
+
+    postrotate
+        systemctl restart openresty
+    endscript
+}
+

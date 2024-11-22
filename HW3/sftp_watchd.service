@@ -1,0 +1,15 @@
+[Unit]
+Description=sftp_watchd Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStartPre=/bin/echo "Starting sftp_watchd."
+ExecStart=/usr/local/bin/sftp_watchd
+ExecStartPost=/bin/bash -c 'pid=$(pgrep -n sftp_watchd) && echo $pid > /var/run/sftp_watchd.pid'
+ExecReload=/bin/bash -c 'pid=$(pgrep -n sftp_watchd) && echo "Kill: $pid" && kill $pid && echo "Starting sftp_watchd." && /usr/local/bin/sftp_watchd && pid=$(pgrep -n sftp_watchd) && echo $pid > /var/run/sftp_watchd.pid'
+ExecStop=/bin/bash -c 'pid=$(pgrep -n sftp_watchd) && echo "Kill: $pid" && kill $pid'
+ExecStopPost=/bin/rm -f /var/run/sftp_watchd.pid
+
+[Install]
+WantedBy=multi-user.target

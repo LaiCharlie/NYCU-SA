@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# /usr/local/bin/sftp_watchd
+while true; do
+    filelist=()
+
+    while IFS= read -r line; do
+        filelist+=("$line")
+    done < <(ls -l /home/sftp/public | awk '{print $3 " " $9}')
+
+    for pair in "${filelist[@]}"; do
+        username=$(echo "$pair" | awk '{print $1}')
+        filename=$(echo "$pair" | awk '{print $2}')
+
+        filepath=("/home/sftp/public/$filename")
+        if file "$filepath" | grep -q "executable"; then
+            mv "$filepath" /home/sftp/hidden/.violated
+            echo "${filepath} violate file detected. Uploaded by ${username}." | logger -p local0.warning
+        fi
+    done
+    sleep 1
+done
