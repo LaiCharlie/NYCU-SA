@@ -21,7 +21,7 @@
 
 - [x] Your machine should boot using UEFI (5%)
 - [x] Set hostname to sa2024-${ID} (5%)
-```bash=
+```bash
 hostnamectl set-hostname sa2024-108
 ```
 
@@ -31,7 +31,7 @@ hostnamectl set-hostname sa2024-108
     - [x] Should use sh as the default shell (10%)
     - [x] You should use this user instead of root for subsequent operations
     
-```bash=
+```bash
 sudo adduser judge
 sudo usermod -aG sudo judge
 
@@ -52,13 +52,13 @@ groups judge
 - [x] Create group (10%)
     - [x] Create a group nycusa (5%)
     - [x] Add judge user to this group (5%)
-```bash=
+```bash
 sudo addgroup nycusa
 sudo adduser judge nycusa
 ```
 
 - [x] Set your machine to Taiwan Standard Time (10%)
-```bash=
+```bash
 timedatectl
 ```
 
@@ -66,7 +66,7 @@ timedatectl
     - [x] Enable sshd
     - [x] Install public key to your /home/judge/.ssh for Online Judge
     - [x] Verify the fingerprint of public key
-```bash=
+```bash
 sudo systemctl status ssh
 # sudo systemctl enable ssh
 # sudo systemctl start ssh
@@ -78,20 +78,20 @@ ssh-keygen -l -f ./nasakey.pub
 # 256 SHA256:l2xVg+C+hMjMldX6htc4SUPE5taFsxKkevTgiGmpeHA judge@sa-2024 (ED25519)
 ```
 
-> ```bash=
+> ```bash
 > sudo vim /etc/ssh/sshd_config
 > # passwordAuthentication no
 > sudo systemctl restart ssh
 > ```
 
 - [x] Edit motd to show “NYCU-SA-2024-${Student ID}” (5%)
-```bash=
+```bash
 sudo vim /etc/motd
 # NYCU-SA-2024-108
 ```
 
 - [x] Configure your package manager to use CSIT mirror (10%)
-```bash=
+```bash
 # https://it.cs.nycu.edu.tw/equipment-linux-mirror
 # https://ubuntu.cs.nycu.edu.tw/ubuntu/
 
@@ -104,7 +104,7 @@ sudo apt upgrade
 ```
 
 - [x] Online Judge servers can ping your system (15%)
-```bash=
+```bash
 sudo apt install wireguard
 vim /etc/wireguard/wg0.conf
 wg-quick up   wg0
