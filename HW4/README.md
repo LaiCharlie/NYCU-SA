@@ -28,7 +28,7 @@
 > #### Install OpenResty on Ubuntu 24.04
 > [Download Document](https://openresty.org/en/installation.html)
 > - Step 1
-> ```console
+> ```bash
 > sudo systemctl disable nginx
 > sudo systemctl stop nginx
 > sudo apt-get -y install --no-install-recommends wget gnupg ca-certificates lsb-release
@@ -42,12 +42,12 @@
 > 
 > - Step 2
 > - For `arm64` or `aarch64` systems:
-> ```bash=
+> ```bash
 > echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/openresty.gpg] http://openresty.org/package/arm64/ubuntu $(lsb_release -sc) main" | > sudo tee /etc/apt/sources.list.d/openresty.list > /dev/null
 > ```
 > 
 > - Step 3
-> ```bash=
+> ```bash
 > sudo apt-get update
 > sudo apt-get -y install openresty
 > sudo apt-get -y install --no-install-recommends openresty
@@ -57,7 +57,7 @@
 > ```
 > 
 > - Step 4
-> ```bash=
+> ```bash
 > vim /usr/local/openresty/nginx/conf/nginx.conf
 > # write all the config into the new nginx.conf
 > ```
@@ -66,7 +66,7 @@
 
 ### OpenResty
 > Example
-```bash=
+```bash
 sudo vim /usr/local/openresty/nginx/conf/nginx.conf
 # http {
 #     server {
@@ -81,12 +81,12 @@ sudo vim /usr/local/openresty/nginx/conf/nginx.conf
 ```
 
 > Check the configuration
-```bash=
+```bash
 sudo openresty -t
 ```
 
 > Restart Nginx
-```bash=
+```bash
 sudo systemctl restart openresty
 ```
 
@@ -98,7 +98,7 @@ sudo systemctl restart openresty
 > wildcard subdomain
 
 - Use `dnsmasq`
-```bash=
+```bash
 sudo systemctl stop systemd-resolved
 sudo systemctl disable systemd-resolved
 sudo apt install dnsmasq
@@ -107,13 +107,13 @@ sudo systemctl status dnsmasq
 ```
 
 - Create `dnsmasq_resolv.conf`
-```bash=
+```bash
 cat /etc/dnsmasq_resolv.conf
 nameserver 140.113.1.1
 nameserver 8.8.8.8
 ```
 
-```bash=
+```bash
 sudo nano /etc/dnsmasq.conf
 # resolv-file=/etc/dnsmasq_resolv.conf
 # server 8.8.8.8
@@ -127,7 +127,7 @@ sudo systemctl restart dnsmasq
 
 ### Hide Server Information
 > Close `server_tokens`
-```bash=
+```bash
 sudo vim /usr/local/openresty/nginx/conf/nginx.conf
 # # add below line
 # server_tokens off;
@@ -136,7 +136,7 @@ sudo vim /usr/local/openresty/nginx/conf/nginx.conf
 ### HTTPS & PKI
 
 > Create CA
-```bash=
+```bash
 # Set in your prefer path
 sudo apt install openssl
 openssl genrsa -out ca.key 4096
@@ -144,14 +144,14 @@ openssl req -x509 -new -nodes -key ca.key -sha256 -days 3650 -out ca.crt -subj "
 ```
 
 > Trust the CA
-```bash=
+```bash
 cp ca.crt /usr/local/share/ca-certificates
 sudo update-ca-certificates
 ```
 <!-- sudo dpkg-reconfigure ca-certificates -->
 
 > Wildcard certificate
-```bash=
+```bash
 openssl genrsa -out server.key 4096
 openssl req -new -key server.key -out server.csr -subj "/C=TW/ST=HsinChu/O=NYCU/CN=*.108.cs.nycu"
 openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days 365 -sha256
@@ -159,7 +159,7 @@ openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out s
 
 > Redirect HTTP to HTTPS
 > ex: `nasa.108.cs.nycu`
-```bash=
+```bash
 sudo vim /usr/local/openresty/nginx/conf/nginx.conf
 # server {
 #     listen 80;
@@ -185,7 +185,7 @@ sudo vim /usr/local/openresty/nginx/conf/nginx.conf
 
 > Enable HSTS
 > ex: `nasa.108.cs.nycu`
-```bash=
+```bash
 sudo vim /usr/local/openresty/nginx/conf/nginx.conf
 # server {
 #     listen 443 ssl;
@@ -201,7 +201,7 @@ sudo vim /usr/local/openresty/nginx/conf/nginx.conf
 ```
 
 > Test the HSTS / SSL certificate
-```bash=
+```bash
 curl -I -L https://108.cs.nycu
 curl -v https://108.cs.nycu
 ```
@@ -209,12 +209,12 @@ curl -v https://108.cs.nycu
 ### Access Control
 
 > Install htpasswd
-```bash=
+```bash
 sudo apt install apache2-utils
 ```
 
 > Create user `sa-admin`
-```bash=
+```bash
 sudo htpasswd -c /your/path/.htpasswd sa-admin
 ```
 
@@ -228,12 +228,12 @@ curl -I -u sa-admin:1011310811 --location-trusted http://nasa.108.cs.nycu
 > --------
 
 > Check the configuration
-```bash=
+```bash
 sudo openresty -t
 ```
 
 > Restart Nginx
-```bash=
+```bash
 sudo systemctl restart openresty
 ```
 
@@ -242,7 +242,7 @@ sudo systemctl restart openresty
 ### Normal Logging
 
 > Conditional Logging
-```bash=
+```bash
 sudo vim nginx.conf
 # map $http_user_agent $loggable {
 #     default 1;
@@ -251,7 +251,7 @@ sudo vim nginx.conf
 ```
 
 > Access log
-```bash=
+```bash
 sudo vim nginx.conf
 # access_log /home/judge/webserver/log/access.log combined if=$loggable;
 ```
@@ -259,7 +259,7 @@ sudo vim nginx.conf
 ### Verbose Logging
 
 > Logging
-```bash=
+```bash
 sudo vim /usr/local/openresty/nginx/conf/nginx.conf
 # log_format test_encode 'STATUS: $web_status\t$encode_log';
 # access_log  /home/judge/webserver/log/access.log test_encode if=$loggable;
@@ -278,20 +278,20 @@ sudo vim /usr/local/openresty/nginx/conf/nginx.conf
 ### Log Rotate
 
 > Install rotate tool
-```bash=
+```bash
 sudo apt update
 sudo apt install logrotate
 ```
 
 > link the `access.log`
-```bash=
+```bash
 sudo vim /usr/local/openresty/nginx/conf/nginx.conf
 # Modify access.log to compressed.log
 sudo ln -s compressed.log access.log
 ```
 
 > Create config file
-```bash=
+```bash
 sudo vim /etc/logrotate.d/hw4_log
 # rotate compressed.log
 sudo logrotate -d /etc/logrotate.d/hw4_log
@@ -301,12 +301,12 @@ sudo logrotate -f /etc/logrotate.d/hw4_log
 > -----
 
 > Check the configuration
-```bash=
+```bash
 sudo openresty -t
 ```
 
 > Restart OpenResty
-```bash=
+```bash
 sudo systemctl restart openresty
 ```
 
@@ -314,20 +314,20 @@ sudo systemctl restart openresty
 ## Database
 
 > Install PostgreSQL
-```bash=
+```bash
 sudo apt update
 sudo apt install postgresql postgresql-client postgresql-contrib
 systemctl status postgresql
 ```
 
 > Set up user
-```bash=
+```bash
 sudo -u postgres psql
 postgres=# CREATE USER root  WITH PASSWORD 'sahw4-108';
 postgres=# ALTER  USER root  WITH SUPERUSER;
 ```
 
-```bash=
+```bash
 $ sudo -u postgres psql
 postgres=# CREATE DATABASE judge;
 postgres=# CREATE USER judge WITH PASSWORD 'your-password';
@@ -337,7 +337,7 @@ postgres=# \q
 ```
 
 > Set up `PGPASSWORD` in `judge`
-```bash=
+```bash
 $ sudo vim ~/.profile
 # Add line
 # export PGPASSWORD="your-password"
@@ -346,7 +346,7 @@ $ . ~/.profile
 ```
 
 > Set up `PGPASSWORD` in `root`
-```bash=
+```bash
 root@sa2024-108:~# vim .bashrc 
 # Add line
 # export PGPASSWORD="sahw4-108"
@@ -354,13 +354,13 @@ root@sa2024-108:~# source .bashrc
 ```
 
 > Test for `root` and `judge`
-```bash=
+```bash
 echo $PGPASSWORD
 psql -w
 ```
 
 > Create database and table
-```bash=
+```bash
 $ psql -W
 
 judge=# CREATE DATABASE "sa-hw4";
@@ -377,7 +377,7 @@ sa-hw4=# CREATE TABLE "user" (
 ```
 
 > Database commands
-```bash=
+```bash
 # command lists
 sa-hw4-# \?
 
@@ -409,12 +409,12 @@ sa-hw4=# DELETE FROM "user" WHERE id = 1;
 ## file.{ID}.cs.nycu
 
 > Install Tools (on both machine)
-```bash=
+```bash
 sudo apt install python3-pip libpq-dev python3.12-venv
 ```
 
 > Virtual Environment (on both machine)
-```bash=
+```bash
 root@sa2024-108:~# python3 -m venv fastapi-env
 root@sa2024-108:~# source fastapi-env/bin/activate
 
@@ -427,7 +427,7 @@ root@sa2024-108:~# source fastapi-env/bin/activate
 > **Note**  : Use `deactivate` to leave Python virtual environment
 
 > Distribute traffic (on `192.168.{ID}.1` only)
-```bash=
+```bash
 sudo vim /usr/local/openresty/nginx/conf/nginx.conf
 # upstream backend_servers {
 #     server 192.168.108.1:8080;
@@ -448,7 +448,7 @@ sudo systemctl restart openresty
 ```
 
 > Setting Database
-```bash=
+```bash
 sudo vim /etc/postgresql/16/main/postgresql.conf
 # Add the line:
 # listen_addresses = '*'
@@ -462,7 +462,7 @@ systemctl restart postgresql
 ```
 
 > NFS setting on `192.168.{ID}.2` (for `/upload` and `/file/{filename}`)
-```bash=
+```bash
 # watch the part NFS in the end of this note first
 root@sa2024-108:/your/path# mkdir /your_upload_files_dir
 root@sa2024-108:/your/path# chown nobody:nogroup /files
@@ -475,7 +475,7 @@ root@sa2024-108:/your/path# exportfs -rv
 ```
 
 > NFS setting on `192.168.{ID}.1` (for `/upload` and `/file/{filename}`)
-```bash=
+```bash
 # watch the part NFS in the end of this note first
 root@sa2024-108:/your/path# mkdir /your_upload_files_dir
 root@sa2024-108:/your/path# sudo mount 192.168.108.2:/your/path/your_upload_files_dir /your/path/your_upload_files_dir
@@ -488,19 +488,19 @@ root@sa2024-108:/your/path# mount -a
 ## adminer.{ID}.cs.nycu
     
 > Install tools
-```bash=
+```bash
 sudo apt update
 sudo apt install php php-pgsql php-fpm
 ```
 
 > Download admin.php
-```bash=
+```bash
 wget https://github.com/vrana/adminer/releases/download/v4.8.1/adminer-4.8.1.php
 sudo mv adminer-4.8.1.php /var/www/html/adminer.php
 ```
 
 > Add permission
-```bash=
+```bash
 sudo vim /etc/postgresql/16/main/pg_hba.conf
 # Add the line
 # local   all             root                                    trust
@@ -509,7 +509,7 @@ systemctl restart postgresql
 ```
 
 > Set up adminer.{ID}.cs.nycu
-```bash=
+```bash
 sudo vim /usr/local/openresty/nginx/conf/nginx.conf
 # user www-data;
 # 
@@ -535,7 +535,7 @@ sudo systemctl restart openresty
     - [x] SSH failed login (12%)
 
 > ICMP rule
-```bash=
+```bash
 sudo iptables -A INPUT -p icmp --icmp-type echo-request -s 192.168.108.0/24 -j ACCEPT
 sudo iptables -A INPUT -p icmp --icmp-type echo-request -j DROP
 sudo iptables -L
@@ -544,7 +544,7 @@ cat /etc/iptables/rules.v4
 ```
 
 > HTTP rule
-```bash=
+```bash
 sudo vim /usr/local/openresty/nginx/conf/nginx.conf
 # location / {
 #     allow 127.0.0.1/32;
@@ -558,7 +558,7 @@ sudo systemctl restart openresty
 ```
 
 > SSH failed login (Fail2Ban)
-```bash=
+```bash
 sudo apt install fail2ban
 sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
 sudo vim /etc/fail2ban/jail.local
@@ -579,7 +579,7 @@ sudo systemctl restart fail2ban
     - [x] Client (6%)
 
 > Server set up
-```bash=
+```bash
 sudo apt update
 sudo apt install nfs-kernel-server
 
@@ -597,7 +597,7 @@ sudo exportfs -rv
 ```
 
 > Client set up
-```bash=
+```bash
 sudo apt update
 sudo apt install nfs-common
 
@@ -612,12 +612,12 @@ sudo mount -a
 ```
 
 > Verify on server
-```bash=
+```bash
 sudo showmount -e
 ```
 
 > Verify on client
-```bash=
+```bash
 df -h | grep /net/data
 ls -l /net/data
 ```
