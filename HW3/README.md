@@ -28,7 +28,7 @@
 > [SFTP reference](https://caibaoz.com/blog/2013/04/27/sftp_config_for_openssh/)
 
 > create user with ssh disable but sftp enable
-```bash=
+```bash
 # modify the shell of user to nologin
 sudo useradd -m -s /usr/sbin/nologin sftp-u1
 sudo useradd -m -s /usr/sbin/nologin sftp-u2
@@ -37,7 +37,7 @@ sudo useradd -m -s /usr/sbin/nologin anonymous
 ```
 
 > Remember to copy /home/judge/**.ssh/authorized_keys** to every users home dir and set proper permission
-> ```bash=
+> ```bash
 > root@sa2024-108:/# ls -al /home/judge/.ssh/
 > # drwx------  2 judge judge   5 Nov  2 03:16 .
 > # -rw-------  1 judge judge  96 Sep 13 17:52 authorized_keys
@@ -46,23 +46,23 @@ sudo useradd -m -s /usr/sbin/nologin anonymous
 > [!WARNING] 
 > #### Wrong config
 > Will cause both SSH and SFTP disable
-> ```bash=
+> ```bash
 > sudo vim /etc/ssh/sshd_config
 > # DenyUsers sftp-u1 sftp-u2 anonymous
 > ```
 
 > create user `sysadm`
-```bash=
+```bash
 sudo useradd -m -s /bin/bash sysadm
 ```
 
 > change home dir of `sysadm`
-```bash=
+```bash
 sudo usermod -d /home/sftp sysadm
 ```
 
 > set password for users
-```bash=
+```bash
 sudo passwd sftp-u1
 sudo passwd sftp-u2
 sudo passwd anonymous
@@ -70,7 +70,7 @@ sudo passwd sysadm
 ```
 
 > create group for permission control
-```bash=
+```bash
 sudo groupadd sftpgroup
 sudo usermod -aG sftpgroup sysadm
 sudo usermod -aG sftpgroup sftp-u1
@@ -78,12 +78,12 @@ sudo usermod -aG sftpgroup sftp-u2
 ```
 
 > remove user from group
-```bash=
+```bash
 sudo deluser anonymous sftpgroup
 ```
 
 > set SFTP
-```bash=
+```bash
 sudo vim /etc/ssh/sshd_config
 # -- Add these lines in the tail of file --
 # Match User sftp-u1,sftp-u2,anonymous
@@ -97,7 +97,7 @@ sudo vim /etc/ssh/sshd_config
 ```
 
 > （Sticky Bit）代表只有目錄內的檔案所有者或是 root 才能進行刪除或移動
-```bash=
+```bash
 sudo chown sysadm:sftpgroup /home/sftp/public
 sudo chown sysadm:sftpgroup /home/sftp/hidden
 sudo chown sysadm:sftpgroup /home/sftp/hidden/treasure
@@ -109,7 +109,7 @@ sudo chmod  775 /home/sftp/hidden/treasure/secret
 ```
 
 > adjust DAC
-```bash=
+```bash
 sudo vim /etc/ssh/sshd_config
 # Match User sftp-u1,sftp-u2,anonymous
 #         ChrootDirectory /home/sftp
@@ -146,24 +146,24 @@ sudo systemctl restart ssh
 
 
 > check rsyslog 
-```bash=
+```bash
 service rsyslog status
 ```
 
 > check the parameter
-```bash=
+```bash
 man sftp-server
 ```
 
 > enable logging SFTP
-```bash=
+```bash
 sudo vim /etc/ssh/sshd_config
 # -- Modify the line Subsystem as --
 # Subsystem sftp internal-sftp -l VERBOSE -f LOCAL0
 ```
 
 > setting the log file by rsyslog
-```bash=
+```bash
 sudo vim /etc/rsyslog.d/50-default.conf
 # -- add the line into file --
 # local0.warning                    /var/log/sftp_watchd.log
@@ -171,30 +171,30 @@ sudo vim /etc/rsyslog.d/50-default.conf
 ```
 
 > restart ssh and rsyslog
-```bash=
+```bash
 sudo systemctl restart ssh
 sudo systemctl restart rsyslog
 ```
 
 > test the file is executable or not
-```bash=
+```bash
 root@sa2024-108:/home/sftp/public# file test-513642f4
 # test-513642f4: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=9ba9e22af85aa315e7248e5056d31fbfa1035331, for GNU/Linux 3.2.0, not stripped
 ```
 
 > sftp_watchd
-```bash=
+```bash
 # Write a program sftp_watchd
 # I put it at /usr/local/bin/
 ```
 
 > Add judge into sftpgroup (oj use `judge` to rm file in `.violate`)
-```bash=
+```bash
 sudo usermod -aG sftpgroup judge
 ```
 
 > sftp_watchd service
-```bash=
+```bash
 # Method 1 (preferred)
 sudo vim /etc/systemd/system/sftp_watchd.service
 # Add your config to control sftp_watchd (my path is /usr/local/bin/sftp_watchd)
@@ -208,7 +208,7 @@ sudo systemctl enable sftp_watchd
 ```
 
 > test service
-```bash=
+```bash
 service sftp_watchd start
 service sftp_watchd stop
 service sftp_watchd restart
@@ -218,7 +218,7 @@ systemctl list-units --type=service | grep sftp
 ```
 
 <!-- 
-```bash=
+```bash
 # `sudo service sftp_watchd start`
 # terminal output: "Starting sftp_watchd." and run the function /usr/local/bin/sftp_watchd
 
@@ -258,7 +258,7 @@ Click on Controller: SATA (or add a new controller if needed) and add four new v
 ```
 
 > check the disk
-```bash=
+```bash
 lsblk
 # 4 new disk
 # sdb      8:16   0    10G  0 disk 
@@ -273,7 +273,7 @@ lsblk
 
 
 > Partition for each disk
-```bash=
+```bash
 sudo parted /dev/sdb
 > GNU Parted 3.6
 > Using /dev/sdb
@@ -320,7 +320,7 @@ sudo parted /dev/sdb
 ```
 
 > verify setting
-```bash=
+```bash
 ls /dev/disk/by-partlabel
 # mypool-1  mypool-2  mypool-3  mypool-4
 ```
@@ -332,17 +332,17 @@ ls /dev/disk/by-partlabel
 
 
 > create zfs pool
-```bash=
+```bash
 sudo zpool create mypool mirror /dev/disk/by-partlabel/mypool-1 /dev/disk/by-partlabel/mypool-2 mirror /dev/disk/by-partlabel/mypool-3 /dev/disk/by-partlabel/mypool-4
 ```
 
 > zfs mount point
-```bash=
+```bash
 zfs set mountpoint=/home/sftp mypool
 ```
 
 > verify zpool
-```bash=
+```bash
 root@sa2024-108:~# zpool status mypool
 #   pool: mypool
 #  state: ONLINE
@@ -372,7 +372,7 @@ root@sa2024-108:/home# lsblk --output NAME,FSTYPE,MODEL,LABEL,PTTYPE,SIZE -e 7
 ```
 
 > create ZFS datasets
-```bash=
+```bash
 sudo zfs create mypool/public
 sudo zfs create mypool/hidden
 
@@ -401,13 +401,13 @@ zfs get all mypool/public mypool/hidden | grep -E "compression|atime"
 
 
 > check $PATH
-```bash=
+```bash
 root@sa2024-108:/usr/local/bin# echo $PATH
 /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 ```
 
 > add script to $PATH 
-```bash=
+```bash
 root@sa2024-108:~# cd /usr/local/bin/
 root@sa2024-108:/usr/local/bin# ls
 zfsbak
@@ -422,7 +422,7 @@ root@sa2024-108:~# visudo
 ```
 
 > test for user judge
-```bash=
+```bash
 $ zfsbak
 Usage:
 - create: zfsbak DATASET [ROTATION_CNT]
@@ -433,7 +433,7 @@ Usage:
 ```
 
 <!-- > Install tools for judge
-```bash=
+```bash
 # [ERR]: SSH execute `sha256` return 1
 # [DBG]: SSH connection stderr: `sudo: sha256: command not found`
 # secret.bin: FAILED
@@ -446,6 +446,6 @@ apt install hashalot
 sudo cat /var/log/auth.log
 ```
 
-```bash=
+```bash
 judge : PWD=/home/judge ; USER=root ; ENV=ZFSBAK_PASS=sImpleP@ss-sa-2023 ; COMMAND=/usr/local/bin/zfsbak -e mypool/public 1
 ```
