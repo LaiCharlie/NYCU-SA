@@ -539,7 +539,8 @@ sudo systemctl restart openresty
 sudo iptables -A INPUT -p icmp --icmp-type echo-request -s 192.168.108.0/24 -j ACCEPT
 sudo iptables -A INPUT -p icmp --icmp-type echo-request -j DROP
 sudo iptables -L
-iptables-save
+netfilter-persistent save
+cat /etc/iptables/rules.v4
 ```
 
 > HTTP rule
