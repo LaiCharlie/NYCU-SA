@@ -28,7 +28,7 @@
 > #### Install OpenResty on Ubuntu 24.04
 > [Download Document](https://openresty.org/en/installation.html)
 > - Step 1
-> ```bash=
+> ```console
 > sudo systemctl disable nginx
 > sudo systemctl stop nginx
 > sudo apt-get -y install --no-install-recommends wget gnupg ca-certificates lsb-release
@@ -36,7 +36,7 @@
 > ```
 > - Step 2
 > - For `x86_64` or `amd64` systems:
-> ```bash=
+> ```bash
 > echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/openresty.gpg] http://openresty.org/package/ubuntu $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/openresty.list > /dev/null
 > ```
 > 
