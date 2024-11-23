@@ -18,7 +18,7 @@
 
 ####  Example
 ##### MATH_SOLVER
-```bash=
+```bash
 root@sa2024-108:/home/judge# curl -s -X POST -H "Content-Type: application/json" -d '{"type": "MATH_SOLVER"}' "http://10.113.0.253/tasks"
 {
     "id":"04f0cd75-7e2d-4b61-83c2-8bca5f320d3c",
@@ -49,7 +49,7 @@ root@sa2024-108:/home/judge# curl -s -X GET "http://10.113.0.253/tasks/04f0cd75-
 > If you get a problem not obey the above definition, just send **“Invalid problem”** to the task server.
 
 ##### JOIN_NYCU_CSIT
-```bash=
+```bash
 root@sa2024-108:/home/judge# curl -s -X POST -H "Content-Type: application/json" -d '{"type": "JOIN_NYCU_CSIT"}' "http://10.113.0.253/tasks"
 {
     “id”: “4a9c99f4-0241-4f3d-a003-7b2f6bb455db”,
@@ -62,7 +62,7 @@ root@sa2024-108:/home/judge# curl -s -X POST -H "Content-Type: application/json"
 ```
 
 ##### CRACK_PASSWORD
-```bash=
+```bash
 root@sa2024-108:/home/judge# curl -s -X POST -H "Content-Type: application/json" -d '{"type": "CRACK_PASSWORD"}' "http://10.113.0.253/tasks"
 {
     “id”: “9d2cde78-837c-4e72-bc9d-4f7204b5520e”,
