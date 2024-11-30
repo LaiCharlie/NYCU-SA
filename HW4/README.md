@@ -85,7 +85,7 @@ sudo vim /usr/local/openresty/nginx/conf/nginx.conf
 sudo openresty -t
 ```
 
-> Restart Nginx
+> Restart OpenResty
 ```bash
 sudo systemctl restart openresty
 ```
@@ -116,7 +116,7 @@ nameserver 8.8.8.8
 ```bash
 sudo nano /etc/dnsmasq.conf
 # resolv-file=/etc/dnsmasq_resolv.conf
-# server 8.8.8.8
+# server=8.8.8.8
 # address=/.108.cs.nycu/127.0.0.1
 sudo systemctl restart dnsmasq
 ```
