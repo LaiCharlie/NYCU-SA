@@ -356,12 +356,11 @@ root@sa2024-108:~# source .bashrc
 > Test for `root` and `judge`
 ```bash
 echo $PGPASSWORD
-psql -w
 ```
 
 > Create database and table
 ```bash
-$ psql -W
+$ psql
 
 judge=# CREATE DATABASE "sa-hw4";
 CREATE DATABASE
